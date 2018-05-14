@@ -1,0 +1,28 @@
+{% set version="1.4.3" %}
+
+package:
+  name: orc
+  version: {{ version }}
+
+source:
+  fn: orc-{{ version }}.tar.gz
+  url: https://github.com/apache/orc/archive/rel/release-{{ version }}.tar.gz
+  sha256: 12d4b96a60f2cb020a3f86a97d93216539c4769d45457781a57c7447bfbd345a
+  patches:
+    - 0001-cmake-rework.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+  host:
+    - zlib
+    - snappy
+    - libprotobuf  {{ protobuf }}
+    - lz4-c
+  run:
+    - protobuf
