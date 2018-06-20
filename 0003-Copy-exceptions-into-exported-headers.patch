@@ -1,0 +1,24 @@
+From 8b29381a96a80e7e39d3fdbc8704965e2c6ae7ae Mon Sep 17 00:00:00 2001
+From: Michael Sarahan <msarahan@gmail.com>
+Date: Fri, 15 Jun 2018 14:42:02 -0500
+Subject: [PATCH] Copy exceptions into exported headers
+
+---
+ c++/include/CMakeLists.txt | 1 +
+ 1 files changed, 1 insertions(+)
+
+diff --git a/c++/include/CMakeLists.txt b/c++/include/CMakeLists.txt
+index 587be70..8177e4f 100644
+--- a/c++/include/CMakeLists.txt
++++ b/c++/include/CMakeLists.txt
+@@ -73,6 +73,7 @@ configure_file (
+ install(FILES
+   "${CMAKE_CURRENT_BINARY_DIR}/orc/orc-config.hh"
+   "orc/ColumnPrinter.hh"
++  "../src/Exceptions.hh"
+   "orc/Int128.hh"
+   "orc/MemoryPool.hh"
+   "orc/OrcFile.hh"
+-- 
+2.11.1
+

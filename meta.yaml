@@ -10,16 +10,22 @@ source:
   sha256: 12d4b96a60f2cb020a3f86a97d93216539c4769d45457781a57c7447bfbd345a
   patches:
     - 0001-cmake-rework.patch
+    - 0002-add-missing-Statistics.hh-header-install.patch
+    - 0003-Copy-exceptions-into-exported-headers.patch
+    - 0004-remove-Adaptor.hh-include-in-Exceptions.hh-for-porta.patch
 
 build:
   number: 0
+  skip: True    # [linux32]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - cmake
+    - make       # [unix]
   host:
+    # putting cmake in host allows it to find the cmake modules better
+    - cmake
     - zlib
     - snappy
     - libprotobuf  {{ protobuf }}

@@ -16,7 +16,6 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_LINKER=${LD})
 fi
 if [[ ${HOST} =~ .*linux.* ]]; then
-    CPPFLAGS="${CPPFLAGS//-std=c++17/-std=c++11}"
     CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
     # I hate you so much CMake.
     LIBPTHREAD=$(find ${PREFIX} -name "libpthread.so")
@@ -30,10 +29,11 @@ cmake \
     -DCMAKE_INSTALL_LIBDIR=$PREFIX/lib \
     -DCMAKE_C_COMPILER=$(type -p ${CC})     \
     -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
-    -DCMAKE_C_FLAGS=$CFLAGS \
-    -DCMAKE_CXX_FLAGS=$CXXFLAGS \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
     "${_CMAKE_EXTRA_CONFIG[@]}" \
     ..
 
 make -j${CPU_COUNT}
 make install
+

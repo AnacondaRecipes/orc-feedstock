@@ -1,22 +1,22 @@
-From 062163105fe3daa8f334083d1616622fec30a54a Mon Sep 17 00:00:00 2001
+From a306934a68d5f115edb278b4cb84598ea3b4ea49 Mon Sep 17 00:00:00 2001
 From: Michael Sarahan <msarahan@gmail.com>
-Date: Mon, 9 Apr 2018 15:01:30 -0500
+Date: Tue, 19 Jun 2018 19:24:16 -0500
 Subject: [PATCH] cmake rework
 
 ---
- CMakeLists.txt            | 38 +++++++++++++++-----------------------
+ CMakeLists.txt            | 40 +++++++++++++++++-----------------------
  c++/libs/CMakeLists.txt   |  8 ++++----
  c++/src/CMakeLists.txt    |  6 +++---
  c++/test/CMakeLists.txt   |  6 +++---
  tools/src/CMakeLists.txt  | 14 +++++++-------
  tools/test/CMakeLists.txt |  4 ++--
- 6 files changed, 34 insertions(+), 42 deletions(-)
+ 6 files changed, 36 insertions(+), 42 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 95fd49c..310e810 100644
+index 95fd49c..8ef961c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -47,27 +47,19 @@ if(NOT APPLE AND NOT MSVC)
+@@ -47,27 +47,21 @@ if(NOT APPLE AND NOT MSVC)
    list (APPEND GMOCK_LIBRARIES pthread)
  endif(NOT APPLE AND NOT MSVC)
  
@@ -43,21 +43,23 @@ index 95fd49c..310e810 100644
 -set (ZLIB_LIBRARIES zlib)
 +find_package(Protobuf REQUIRED)
 +
-+find_path(SNAPPY_INCLUDE_DIRS NAMES snappy.h PATHS ${PREFIX}/include)
-+find_library(SNAPPY_LIBRARIES NAMES snappy PATHS ${PREFIX}/lib)
 +include(FindPackageHandleStandardArgs)
-+find_package_handle_standard_args(Snappy DEFAULT_MSG SNAPPY_INCLUDE_DIRS SNAPPY_LIBRARIES)
 +
-+find_path(LZ4_INCLUDE_DIRS NAMES lz4.h PATHS ${PREFIX}/include)
-+find_library(LZ4_LIBRARIES NAMES lz4 PATHS ${PREFIX}/lib)
-+include(FindPackageHandleStandardArgs)
-+find_package_handle_standard_args(LZ4 DEFAULT_MSG LZ4_INCLUDE_DIRS LZ4_LIBRARIES)
++find_path(SNAPPY_INCLUDE_DIRS NAMES snappy.h PATHS $ENV{PREFIX}/include NO_DEFAULT_PATH)
++find_library(SNAPPY_LIBRARIES NAMES snappy PATHS $ENV{PREFIX}/lib NO_DEFAULT_PATH)
++find_package_handle_standard_args(Snappy REQUIRED_VARS SNAPPY_INCLUDE_DIRS SNAPPY_LIBRARIES)
 +
-+find_package(zlib REQUIRED)
++find_path(LZ4_INCLUDE_DIRS NAMES lz4.h PATHS $ENV{PREFIX}/include NO_DEFAULT_PATH)
++find_library(LZ4_LIBRARIES NAMES lz4 PATHS $ENV{PREFIX}/lib NO_DEFAULT_PATH)
++find_package_handle_standard_args(LZ4 REQUIRED_VARS LZ4_INCLUDE_DIRS LZ4_LIBRARIES)
++
++find_path(ZLIB_INCLUDE_DIRS NAMES zlib.h PATHS $ENV{PREFIX}/include NO_DEFAULT_PATH)
++find_library(ZLIB_LIBRARIES NAMES z PATHS $ENV{PREFIX}/lib NO_DEFAULT_PATH)
++find_package_handle_standard_args(ZLIB REQUIRED_VARS ZLIB_INCLUDE_DIRS ZLIB_LIBRARIES)
  
  #
  # Compiler specific flags
-@@ -82,9 +74,9 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+@@ -82,9 +76,9 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
    set (WARN_FLAGS "${WARN_FLAGS} -Wno-c++98-compat-pedantic -Wno-padded")
    set (WARN_FLAGS "${WARN_FLAGS} -Wno-covered-switch-default")
    set (WARN_FLAGS "${WARN_FLAGS} -Wno-missing-noreturn -Wno-unknown-pragmas")

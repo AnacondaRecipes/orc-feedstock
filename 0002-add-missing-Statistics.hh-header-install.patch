@@ -1,0 +1,24 @@
+From 4dc17a7508cce29575ea44e45751c252bc823b0a Mon Sep 17 00:00:00 2001
+From: Michael Sarahan <msarahan@gmail.com>
+Date: Fri, 15 Jun 2018 14:29:23 -0500
+Subject: [PATCH] add missing Statistics.hh header install
+
+---
+ c++/include/CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/c++/include/CMakeLists.txt b/c++/include/CMakeLists.txt
+index 3891e71..587be70 100644
+--- a/c++/include/CMakeLists.txt
++++ b/c++/include/CMakeLists.txt
+@@ -77,6 +77,7 @@ install(FILES
+   "orc/MemoryPool.hh"
+   "orc/OrcFile.hh"
+   "orc/Reader.hh"
++  "orc/Statistics.hh"
+   "orc/Type.hh"
+   "orc/Vector.hh"
+   DESTINATION "include/orc"
+-- 
+2.11.1
+
