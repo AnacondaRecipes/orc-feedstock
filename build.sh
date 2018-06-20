@@ -25,8 +25,12 @@ fi
 cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_JAVA=False \
+    -DLZ4_HOME=$PREFIX \
+    -DZLIB_HOME=$PREFIX \
+    -DPROTOBUF_HOME=$PREFIX \
+    -DSNAPPY_HOME=$PREFIX \
+    -DBUILD_LIBHDFSPP=NO \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
-    -DCMAKE_INSTALL_LIBDIR=$PREFIX/lib \
     -DCMAKE_C_COMPILER=$(type -p ${CC})     \
     -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
     -DCMAKE_C_FLAGS="$CFLAGS" \
@@ -34,6 +38,6 @@ cmake \
     "${_CMAKE_EXTRA_CONFIG[@]}" \
     ..
 
-make -j${CPU_COUNT}
-make install
-
+cmake --build . --config Release -- -j${CPU_COUNT}
+ctest -C Release
+cmake --build . --config Release --target install

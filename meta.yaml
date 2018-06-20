@@ -1,4 +1,4 @@
-{% set version="1.4.3" %}
+{% set version="1.5.1" %}
 
 package:
   name: orc
@@ -7,12 +7,7 @@ package:
 source:
   fn: orc-{{ version }}.tar.gz
   url: https://github.com/apache/orc/archive/rel/release-{{ version }}.tar.gz
-  sha256: 12d4b96a60f2cb020a3f86a97d93216539c4769d45457781a57c7447bfbd345a
-  patches:
-    - 0001-cmake-rework.patch
-    - 0002-add-missing-Statistics.hh-header-install.patch
-    - 0003-Copy-exceptions-into-exported-headers.patch
-    - 0004-remove-Adaptor.hh-include-in-Exceptions.hh-for-porta.patch
+  sha256: 41b4f06ab425c875987b4b6fc9e347b2b434dcc768d0537708a310bb5e6277ce
 
 build:
   number: 0
