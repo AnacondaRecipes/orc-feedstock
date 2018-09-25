@@ -1,4 +1,4 @@
-{% set version="1.5.1" %}
+{% set version="1.5.2" %}
 
 package:
   name: orc
@@ -7,7 +7,7 @@ package:
 source:
   fn: orc-{{ version }}.tar.gz
   url: https://github.com/apache/orc/archive/rel/release-{{ version }}.tar.gz
-  sha256: 41b4f06ab425c875987b4b6fc9e347b2b434dcc768d0537708a310bb5e6277ce
+  sha256: 8b0a9e50281f5ea5647c0ac384b5de9dd0b98726a501eae9f568df6833a716c0
 
 build:
   number: 0
@@ -23,7 +23,7 @@ requirements:
     - cmake
     - zlib
     - snappy
-    - libprotobuf  {{ protobuf }}
+    - libprotobuf
     - lz4-c
   run:
     - protobuf
