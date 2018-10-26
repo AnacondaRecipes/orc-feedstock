@@ -1,4 +1,4 @@
-mkdir build
+mkdir -p build
 cd build
 
 declare -a _CMAKE_EXTRA_CONFIG
@@ -22,6 +22,8 @@ if [[ ${HOST} =~ .*linux.* ]]; then
     _CMAKE_EXTRA_CONFIG+=(-DPTHREAD_LIBRARY=${LIBPTHREAD})
 fi
 
+CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$PREFIX/lib"
+
 cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_JAVA=False \
@@ -38,6 +40,10 @@ cmake \
     "${_CMAKE_EXTRA_CONFIG[@]}" \
     ..
 
-cmake --build . --config Release -- -j${CPU_COUNT}
-ctest -C Release
-cmake --build . --config Release --target install
+make
+make test-out
+make install
+
+# cmake --build . --config Release -- -j${CPU_COUNT}
+# ctest -C Release -VV
+# cmake --build . --config Release --target install
