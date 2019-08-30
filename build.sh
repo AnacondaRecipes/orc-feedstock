@@ -25,25 +25,24 @@ fi
 CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$PREFIX/lib"
 
 cmake \
+    -DCMAKE_PREFIX_PATH=$PREFIX \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_JAVA=False \
     -DLZ4_HOME=$PREFIX \
     -DZLIB_HOME=$PREFIX \
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
+    -DProtobuf_ROOT=$PREFIX \
     -DPROTOBUF_HOME=$PREFIX \
     -DSNAPPY_HOME=$PREFIX \
     -DBUILD_LIBHDFSPP=NO \
+    -DBUILD_CPP_TESTS=OFF \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DCMAKE_C_COMPILER=$(type -p ${CC})     \
     -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
     -DCMAKE_C_FLAGS="$CFLAGS" \
     -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
     "${_CMAKE_EXTRA_CONFIG[@]}" \
-    ..
+    -GNinja ..
 
-make
-make test-out
-make install
-
-# cmake --build . --config Release -- -j${CPU_COUNT}
-# ctest -C Release -VV
-# cmake --build . --config Release --target install
+ninja
+ninja install

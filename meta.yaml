@@ -1,28 +1,41 @@
-{% set version="1.5.3" %}
+{% set version = "1.5.6" %}
 
 package:
   name: orc
   version: {{ version }}
 
 source:
-  url: http://mirrors.ibiblio.org/apache/orc/orc-{{ version }}/orc-{{ version }}.tar.gz
-  sha256: 96da3cccd2b396dc7813949d3c459a5d6995778928d344f4553cf890f171521c
+  url: https://archive.apache.org/dist/orc/orc-{{ version }}/orc-{{ version }}.tar.gz
+  sha256: e0588bfd96103bc1904166c63c84e769bf7259eee99f409629ad871ea5600e77
+  patches:
+    - 0001-Deactivate-aggressive-failures-on-warnings.patch
 
 build:
   number: 0
-  skip: True    # [linux32 or win]
+  skip: True    # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - make       # [unix]
-  host:
-    # putting cmake in host allows it to find the cmake modules better
+    - ninja       # [unix]
     - cmake
+  host:
     - zlib
     - snappy
-    - libprotobuf-static   {{ libprotobuf }}
+    - libprotobuf
     - lz4-c
   run:
-    - protobuf
+    - libprotobuf
+
+test:
+  commands:
+    - test -f $PREFIX/lib/liborc.a  # [unix]
+
+about:
+  home: http://github.com/apache/orc
+  license: Apache-2.0
+  license_family: Apache
+  license_file: LICENSE
+  summary: 'C++ libraries for Apache ORC'
+
