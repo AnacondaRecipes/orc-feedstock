@@ -1,4 +1,4 @@
-{% set version = "1.6.2" %}
+{% set version = "1.6.4" %}
 
 package:
   name: orc
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://archive.apache.org/dist/orc/orc-{{ version }}/orc-{{ version }}.tar.gz
-  sha256: 5c394603faba3c50a295b44933f2c1b3532da48391d56764a1b2a2d67b610eed
+  sha256: ceea9849277354cffb37853b7f47ea96898c3e716e0803a597ca657cdb59e43c
   patches:
     # ORC builds by default with -Werror but some dependencies omit warnings.
     # This deactivates -Werror
