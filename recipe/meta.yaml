@@ -45,11 +45,13 @@ test:
     - test -f $PREFIX/include/orc/Common.hh   # [unix]
 
 about:
-  home: http://github.com/apache/orc
+  home: https://orc.apache.org/
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE
   summary: C++ libraries for Apache ORC
+  dev_url: https://github.com/apache/orc
+  doc_url: https://github.com/apache/orc#readme
 
 extra:
   recipe-maintainers:
