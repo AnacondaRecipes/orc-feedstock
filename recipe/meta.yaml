@@ -1,4 +1,4 @@
-{% set version = "1.6.9" %}
+{% set version = "1.7.4" %}
 
 package:
   name: orc
@@ -6,20 +6,17 @@ package:
 
 source:
   url: https://archive.apache.org/dist/orc/orc-{{ version }}/orc-{{ version }}.tar.gz
-  sha256: d19af60cd81cdb17872aa99b3687e471683e22c6fae73a21d5fc5aed636ebbb8
+  sha256: 0a70c5e877b1ff268e768c94392574a084092f8aa7f97796c13de276103d8272
   patches:
     # ORC builds by default with -Werror but some dependencies omit warnings.
     # This deactivates -Werror
     - 0001-Deactivate-aggressive-failures-on-warnings.patch
-    - 0002-Partially-rework-cmake-modules-to-accommodate-librar.patch
     - 0003-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch
 
 build:
-  number: 3
+  number: 0
   run_exports:
     - {{ pin_subpackage("orc", max_pin="x.x.x") }}
-  ignore_run_exports:
-    - zlib  # [unix]
 
 requirements:
   build:
@@ -28,7 +25,7 @@ requirements:
     - m2-base  # [win]
     - m2-patch  # [win]
     - patch  # [not win]
-    - ninja       # [unix]
+    - ninja  # [unix]
     # `protoc` is also used for building
     - libprotobuf
     - cmake
