@@ -17,6 +17,9 @@ build:
   number: 0
   run_exports:
     - {{ pin_subpackage("orc", max_pin="x.x.x") }}
+  ignore_run_exports:
+    # Is linked in statically via `-Wl,-Bstatic -lz`
+    - zlib
 
 requirements:
   build:

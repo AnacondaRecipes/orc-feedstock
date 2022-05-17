@@ -55,5 +55,5 @@ cmake ${CMAKE_ARGS} \
     "${_CMAKE_EXTRA_CONFIG[@]}" \
     -GNinja ..
 
-ninja
+ninja -v
 ninja install
