@@ -12,6 +12,7 @@ source:
     # This deactivates -Werror
     - 0001-Deactivate-aggressive-failures-on-warnings.patch
     - 0003-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch
+    - 0004-Find-LZ4-on-windows.patch  # [win]
 
 build:
   number: 0
