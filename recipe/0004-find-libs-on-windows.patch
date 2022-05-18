@@ -12,7 +12,7 @@ diff -urN a/cmake_modules/FindLZ4.cmake b/cmake_modules/FindLZ4.cmake
  
 diff -urN a/cmake_modules/FindProtobuf.cmake b/cmake_modules/FindProtobuf.cmake
 --- a/cmake_modules/FindProtobuf.cmake	2022-04-10 00:50:16.000000000 +0300
-+++ b/cmake_modules/FindProtobuf.cmake	2022-05-18 09:35:44.997608503 +0300
++++ b/cmake_modules/FindProtobuf.cmake	2022-05-18 10:30:09.007734409 +0300
 @@ -37,7 +37,7 @@
    NO_DEFAULT_PATH
    PATH_SUFFIXES "include")
@@ -22,3 +22,23 @@ diff -urN a/cmake_modules/FindProtobuf.cmake b/cmake_modules/FindProtobuf.cmake
    ${_protobuf_path}
    PATH_SUFFIXES "lib")
  
+@@ -45,7 +45,7 @@
+   ${_protobuf_path}
+   PATH_SUFFIXES "lib")
+ 
+-find_library (PROTOC_LIBRARY NAMES protoc HINTS
++find_library (PROTOC_LIBRARY NAMES libprotoc HINTS
+   ${_protobuf_path}
+   PATH_SUFFIXES "lib")
+ 
+@@ -60,8 +60,8 @@
+ 
+ if (PROTOBUF_INCLUDE_DIR AND PROTOBUF_LIBRARY AND PROTOC_LIBRARY AND PROTOBUF_EXECUTABLE)
+   set (PROTOBUF_FOUND TRUE)
+-  set (PROTOBUF_LIB_NAME protobuf)
+-  set (PROTOC_LIB_NAME protoc)
++  set (PROTOBUF_LIB_NAME libprotobuf)
++  set (PROTOC_LIB_NAME libprotoc)
+ else ()
+   set (PROTOBUF_FOUND FALSE)
+ endif ()
