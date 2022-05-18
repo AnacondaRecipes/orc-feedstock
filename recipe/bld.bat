@@ -1,7 +1,7 @@
 @echo ON
 
 md build
-pushd build
+cd build
 
 :: See also https://github.com/protocolbuffers/protobuf/issues/2502#issuecomment-412868718
 set CXXFLAGS=-DPROTOBUF_USE_DLLS %CXXFLAGS%
@@ -18,6 +18,7 @@ cmake %CMAKE_ARGS% ^
     -DSNAPPY_HOME=%LIBRARY_PREFIX% ^
     -DPROTOBUF_HOME=%LIBRARY_PREFIX% ^
     -DBUILD_SHARED_LIBS=ON ^
+    -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
     -DBUILD_TOOLS=OFF ^
     -DORC_PREFER_STATIC_PROTOBUF=OFF ^
     -DORC_PREFER_STATIC_SNAPPY=OFF ^
@@ -26,12 +27,14 @@ cmake %CMAKE_ARGS% ^
     -DORC_PREFER_STATIC_ZLIB=OFF ^
     -DORC_PREFER_STATIC_GMOCK=OFF ^
     -DBUILD_JAVA=OFF ^
-    -DBUILD_LIBHDFSPP=NO ^
+    -DBUILD_LIBHDFSPP=OFF ^
     -DBUILD_CPP_TESTS=OFF ^
     -GNinja ..
-
 if errorlevel 1 exit /b 1
 ninja -v
 if errorlevel 1 exit /b 1
 ninja install
+if errorlevel 1 exit /b 1
+md %LIBRARY_PREFIX%\bin
+move %LIBRARY_PREFIX%\lib\orc.dll %LIBRARY_PREFIX%\bin
 if errorlevel 1 exit /b 1
