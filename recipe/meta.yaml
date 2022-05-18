@@ -21,8 +21,8 @@ build:
   run_exports:
     - {{ pin_subpackage("orc", max_pin="x.x.x") }}
   ignore_run_exports:
-    # Is linked in statically via `-Wl,-Bstatic -lz`
-    - zlib
+    # On *nix linked in statically via `-Wl,-Bstatic -lz`
+    - zlib  # [not win]
 
 requirements:
   build:
@@ -46,6 +46,8 @@ test:
   commands:
     - test -f $PREFIX/lib/liborc${SHLIB_EXT}  # [unix]
     - test -f $PREFIX/include/orc/Common.hh   # [unix]
+    - if not exist %PREFIX%\\Library\\bin\\orc.dll exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\orc.lib exit 1  # [win]
 
 about:
   home: https://orc.apache.org/
