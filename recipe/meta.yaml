@@ -12,7 +12,9 @@ source:
     # This deactivates -Werror
     - 0001-Deactivate-aggressive-failures-on-warnings.patch
     - 0003-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch
-    - 0004-Find-LZ4-on-windows.patch  # [win]
+    # The build system looks for lz4.lib and protobuf.lib, but our libs are
+    # called liblz4.lib and libprotobuf.lib.
+    - 0004-find-libs-on-windows.patch  # [win]
 
 build:
   number: 0
