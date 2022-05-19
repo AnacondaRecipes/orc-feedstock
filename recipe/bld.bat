@@ -1,0 +1,40 @@
+@echo ON
+
+md build
+cd build
+
+:: See also https://github.com/protocolbuffers/protobuf/issues/2502#issuecomment-412868718
+set CXXFLAGS=-DPROTOBUF_USE_DLLS %CXXFLAGS%
+
+cmake %CMAKE_ARGS% ^
+    -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW ^
+    -DCMAKE_PREFIX_PATH=%PREFIX% ^
+    -DCMAKE_FIND_ROOT_PATH=%PREFIX% ^
+    -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+    -DLZ4_HOME=%LIBRARY_PREFIX% ^
+    -DZLIB_HOME=%LIBRARY_PREFIX% ^
+    -DZSTD_HOME=%LIBRARY_PREFIX% ^
+    -DSNAPPY_HOME=%LIBRARY_PREFIX% ^
+    -DPROTOBUF_HOME=%LIBRARY_PREFIX% ^
+    -DBUILD_SHARED_LIBS=ON ^
+    -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
+    -DBUILD_TOOLS=OFF ^
+    -DORC_PREFER_STATIC_PROTOBUF=OFF ^
+    -DORC_PREFER_STATIC_SNAPPY=OFF ^
+    -DORC_PREFER_STATIC_LZ4=OFF ^
+    -DORC_PREFER_STATIC_ZSTD=OFF ^
+    -DORC_PREFER_STATIC_ZLIB=OFF ^
+    -DORC_PREFER_STATIC_GMOCK=OFF ^
+    -DBUILD_JAVA=OFF ^
+    -DBUILD_LIBHDFSPP=OFF ^
+    -DBUILD_CPP_TESTS=OFF ^
+    -GNinja ..
+if errorlevel 1 exit /b 1
+ninja -v
+if errorlevel 1 exit /b 1
+ninja install
+if errorlevel 1 exit /b 1
+md %LIBRARY_PREFIX%\bin
+move %LIBRARY_PREFIX%\lib\orc.dll %LIBRARY_PREFIX%\bin
+if errorlevel 1 exit /b 1
