@@ -55,6 +55,7 @@ about:
   summary: C++ libraries for Apache ORC
   dev_url: https://github.com/apache/orc
   doc_url: https://github.com/apache/orc#readme
+  description: The smallest, fastest columnar storage for Hadoop workloads.
 
 extra:
   recipe-maintainers:
