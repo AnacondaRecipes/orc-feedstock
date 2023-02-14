@@ -34,10 +34,10 @@ requirements:
     - libprotobuf
     - cmake
   host:
-    - zlib
-    - snappy
+    - zlib 1.2.13
+    - snappy 1.1.9
     - libprotobuf
-    - lz4-c
+    - lz4-c 1.9.4
     - zstd
 
 test:
