@@ -15,6 +15,7 @@ source:
     # The build system looks for lz4.lib and protobuf.lib, but our libs are
     # called liblz4.lib and libprotobuf.lib.
     - 0004-find-libs-on-windows.patch  # [win]
+    - 0005-fix_cmake_zlib_linking.patch
 
 build:
   number: 1
