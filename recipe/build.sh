@@ -16,9 +16,9 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_AR=${AR})
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_RANLIB=${RANLIB})
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_LINKER=${LD})
+    CXXFLAGS="${CXXFLAGS} -DPROTOBUF_USE_DLLS -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 if [[ ${HOST} =~ .*linux.* ]]; then
-    CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
     # I hate you so much CMake.
     LIBPTHREAD=$(find ${PREFIX} -name "libpthread.so")
     _CMAKE_EXTRA_CONFIG+=(-DPTHREAD_LIBRARY=${LIBPTHREAD})
