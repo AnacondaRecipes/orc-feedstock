@@ -37,12 +37,20 @@ requirements:
     - zlib {{ zlib }}
     - snappy 1.1.10
     - libprotobuf 4.25.3
+    - libabseil 20240116.2 # [win] linked with orc.dll through libprotobuf dep.
     - lz4-c 1.9.4
     - zstd {{ zstd }}
   run:
+    # through run exports
+    - zlib
+    - snappy
+    - libprotobuf
+    - libabseil  # [win]
+    - lz4-c
+    - zstd
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
     # orc >=2.0.1 will prefer $CONDA_PREFIX/share/zoneinfo for tzdb
     - tzdata
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
 
 test:
   commands:
