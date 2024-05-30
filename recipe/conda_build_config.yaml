@@ -1,8 +1,3 @@
-cxx_compiler:               # [win]
-  - 'vs2019'                # [win]
-c_compiler:                 # [win]
-  - 'vs2019'                # [win]
-
 # abseil (use through protobuf includes) now only support MacOS >=10.15, see
 # https://github.com/abseil/abseil-cpp#support
 MACOSX_SDK_VERSION:        # [osx and x86_64]
