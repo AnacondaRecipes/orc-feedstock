@@ -1,4 +1,4 @@
-{% set version = "1.7.4" %}
+{% set version = "2.0.1" %}
 
 package:
   name: orc
@@ -6,46 +6,66 @@ package:
 
 source:
   url: https://archive.apache.org/dist/orc/orc-{{ version }}/orc-{{ version }}.tar.gz
-  sha256: 0a70c5e877b1ff268e768c94392574a084092f8aa7f97796c13de276103d8272
+  sha256: 1ffac0228aa83f04a1b1cf2788a3af5953e82587ae3a77c41900e99f2557132d
   patches:
     # ORC builds by default with -Werror but some dependencies omit warnings.
     # This deactivates -Werror
-    - 0001-Deactivate-aggressive-failures-on-warnings.patch
-    - 0003-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch
-    # The build system looks for lz4.lib and protobuf.lib, but our libs are
-    # called liblz4.lib and libprotobuf.lib.
-    - 0004-find-libs-on-windows.patch  # [win]
-    - 0005-fix_cmake_zlib_linking.patch
+    - patches/0001-Deactivate-aggressive-failures-on-warnings.patch
+    - patches/0002-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch
+    - patches/0003-CMake-Add-more-hints-for-libraries-on-Windows.patch
+    - patches/0004-don-t-force-lib-destination.patch
+    - patches/0005-Check-for-protobuf-config-based-module.patch
 
 build:
-  number: 1
+  number: 0
   run_exports:
-    - {{ pin_subpackage("orc", max_pin="x.x.x") }}
+    - {{ pin_subpackage("orc", max_pin="x.x.x") }}      
+  missing_dso_whitelist:  # [s390x]
+    - '$RPATH/ld64.so.1'  # [s390x]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - m2-base  # [win]
     - m2-patch  # [win]
     - patch  # [not win]
-    - ninja  # [unix]
+    - ninja-base  # [unix]
     # `protoc` is also used for building
-    - libprotobuf
+    - libprotobuf 4.25.3
     - cmake
   host:
-    - zlib 1.2.13
-    - snappy 1.1.9
-    - libprotobuf
+    - zlib {{ zlib }}
+    - snappy 1.1.10
+    - libprotobuf 4.25.3
+    - libabseil 20240116.2 # [win] linked with orc.dll through libprotobuf dep.
     - lz4-c 1.9.4
+    - zstd {{ zstd }}
+  run:
+    # through run exports
+    - zlib
+    - snappy
+    - libprotobuf
+    - libabseil  # [win]
+    - lz4-c
     - zstd
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
+    # orc >=2.0.1 will prefer $CONDA_PREFIX/share/zoneinfo for tzdb
+    - tzdata
 
 test:
   commands:
-    - test -f $PREFIX/lib/liborc${SHLIB_EXT}  # [unix]
-    - test -f $PREFIX/include/orc/Common.hh   # [unix]
-    - if not exist %PREFIX%\\Library\\bin\\orc.dll exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\lib\\orc.lib exit 1  # [win]
+    # shared libraries
+    - test -f $PREFIX/lib/liborc${SHLIB_EXT}     # [unix]
+    - if not exist %LIBRARY_BIN%\orc.dll exit 1  # [win]
+    # import library for the DLL
+    - if not exist %LIBRARY_LIB%\orc.lib exit 1  # [win]
+
+    # absence of static libraries
+    - test ! -f $PREFIX/lib/liborc.a             # [not win]
+
+    # headers
+    - test -f $PREFIX/include/orc/Common.hh            # [unix]
+    - if not exist %LIBRARY_INC%\orc\Common.hh exit 1  # [win]
 
 about:
   home: https://orc.apache.org/

@@ -16,19 +16,19 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_AR=${AR})
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_RANLIB=${RANLIB})
     _CMAKE_EXTRA_CONFIG+=(-DCMAKE_LINKER=${LD})
+    CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 if [[ ${HOST} =~ .*linux.* ]]; then
-    CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
     # I hate you so much CMake.
     LIBPTHREAD=$(find ${PREFIX} -name "libpthread.so")
     _CMAKE_EXTRA_CONFIG+=(-DPTHREAD_LIBRARY=${LIBPTHREAD})
+    export LDFLAGS="${LDFLAGS} -Wl,-rpath,$PREFIX/lib"
 fi
-
-CPPFLAGS="${CPPFLAGS} -Wl,-rpath,$PREFIX/lib"
 
 cmake ${CMAKE_ARGS} \
     -DCMAKE_PREFIX_PATH=$PREFIX \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CXX_STANDARD=17 \
     -DBUILD_SHARED_LIBS=ON \
     -DORC_PREFER_STATIC_PROTOBUF=OFF \
     -DORC_PREFER_STATIC_SNAPPY=OFF \
@@ -47,6 +47,7 @@ cmake ${CMAKE_ARGS} \
     -DSNAPPY_HOME=$PREFIX \
     -DBUILD_LIBHDFSPP=NO \
     -DBUILD_CPP_TESTS=OFF \
+    -DINSTALL_VENDORED_LIBS=OFF \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DCMAKE_C_COMPILER=$(type -p ${CC})     \
     -DCMAKE_CXX_COMPILER=$(type -p ${CXX})  \
