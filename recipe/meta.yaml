@@ -10,8 +10,9 @@ source:
   patches:
     - patches/0001-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch
     - patches/0002-Allow-user-to-override-path-to-protoc.patch
+    # 0003 is https://github.com/apache/orc/pull/2316
     - patches/0003-add-missing-include-for-protobuf-types.patch
-    # 0004 can be removed in the next release
+    # 0004 is https://github.com/apache/orc/pull/2345
     - patches/0004-v2.2.0-Windows-byteswap-rename.patch
 
 build:
