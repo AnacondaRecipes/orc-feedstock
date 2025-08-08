@@ -1,0 +1,31 @@
+From 2f7889e213996571dce4291fa1e75ed43195c626 Mon Sep 17 00:00:00 2001
+From: Yuriy Chernyshov <thegeorg@yandex-team.com>
+Date: Wed, 6 Aug 2025 23:33:53 +0800
+Subject: [PATCH] ORC-1967: [C++] Fix Windows build
+
+See
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/byteswap-uint64-byteswap-ulong-byteswap-ushort?view=msvc-170
+
+Closes #2345 from georgthegreat/patch-5.
+
+Authored-by: Yuriy Chernyshov <thegeorg@yandex-team.com>
+Signed-off-by: Gang Wu <ustcwg@gmail.com>
+---
+ c++/src/Geospatial.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/c++/src/Geospatial.cc b/c++/src/Geospatial.cc
+index 6d7d268703..2b110cacb6 100644
+--- a/c++/src/Geospatial.cc
++++ b/c++/src/Geospatial.cc
+@@ -66,8 +66,8 @@ namespace orc::geospatial {
+ 
+ #if defined(_MSC_VER)
+ #include <intrin.h>  // IWYU pragma: keep
+-#define ORC_BYTE_SWAP64 _byteSwap_uint64
+-#define ORC_BYTE_SWAP32 _byteSwap_ulong
++#define ORC_BYTE_SWAP64 _byteswap_uint64
++#define ORC_BYTE_SWAP32 _byteswap_ulong
+ #else
+ #define ORC_BYTE_SWAP64 __builtin_bswap64
+ #define ORC_BYTE_SWAP32 __builtin_bswap32
