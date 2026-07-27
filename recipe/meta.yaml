@@ -15,9 +15,11 @@ source:
     - patches/0003-add-missing-include-for-protobuf-types.patch
     # 0004 is https://github.com/apache/orc/pull/2345
     - patches/0004-v2.2.0-Windows-byteswap-rename.patch
+    # 0005 is https://github.com/apache/orc/pull/2615 (ORC-2159)
+    - patches/0005-ORC-2159-fix-nodiscard-return-values.patch
 
 build:
-  number: 2
+  number: 3
   run_exports:
     - {{ pin_subpackage(name, max_pin="x.x.x") }}
 
@@ -29,12 +31,12 @@ requirements:
     - cmake
     - ninja-base # [unix]
     # `protoc` is also used for building
-    - libprotobuf {{ libprotobuf }}
+    - libprotobuf 7.35.1
   host:
     - libzlib {{ libzlib }}
     - snappy {{ snappy }}
-    - libprotobuf {{ libprotobuf }}
-    - libabseil {{ libabseil }} # [win] linked with orc.dll through libprotobuf dep.
+    - libprotobuf 7.35.1
+    - libabseil 20260526.0 # [win] linked with orc.dll through libprotobuf dep.
     - lz4-c {{ lz4_c }}
     - zstd {{ zstd }}
   run:
