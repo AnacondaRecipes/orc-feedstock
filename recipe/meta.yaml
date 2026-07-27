@@ -15,6 +15,8 @@ source:
     - patches/0003-add-missing-include-for-protobuf-types.patch
     # 0004 is https://github.com/apache/orc/pull/2345
     - patches/0004-v2.2.0-Windows-byteswap-rename.patch
+    # 0005 is https://github.com/apache/orc/pull/2615 (ORC-2159)
+    - patches/0005-ORC-2159-fix-nodiscard-return-values.patch
 
 build:
   number: 3

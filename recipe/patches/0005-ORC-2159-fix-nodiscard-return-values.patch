@@ -1,0 +1,47 @@
+Backport of apache/orc ORC-2159 (757c4fa): fix C++ build with nodiscard
+return values from protobuf / ZeroCopyStream APIs under -Werror.
+
+Adapted for ORC 2.2.0 (ColumnReader.cc / ColumnWriter.cc only; tests and
+tools disabled in this feedstock).
+
+--- a/c++/src/ColumnReader.cc
++++ b/c++/src/ColumnReader.cc
+@@ -27,6 +27,7 @@
+ #include "orc/Exceptions.hh"
+ 
+ #include <math.h>
++#include <tuple>
+ #include <iostream>
+ 
+ namespace orc {
+@@ -463,7 +464,7 @@ namespace orc {
+       const size_t cap = static_cast<size_t>(std::numeric_limits<int>::max());
+       while (sizeToSkip != 0) {
+         size_t step = sizeToSkip > cap ? cap : sizeToSkip;
+-        inputStream_->Skip(static_cast<int>(step));
++        std::ignore = inputStream_->Skip(static_cast<int>(step));
+         sizeToSkip -= step;
+       }
+       bufferEnd_ = nullptr;
+@@ -736,7 +737,7 @@ namespace orc {
+       const size_t cap = static_cast<size_t>(std::numeric_limits<int>::max());
+       while (totalBytes != 0) {
+         size_t step = totalBytes > cap ? cap : totalBytes;
+-        blobStream_->Skip(static_cast<int>(step));
++        std::ignore = blobStream_->Skip(static_cast<int>(step));
+         totalBytes -= step;
+       }
+       lastBufferLength_ = 0;
+--- a/c++/src/ColumnWriter.cc
++++ b/c++/src/ColumnWriter.cc
+@@ -212,7 +212,9 @@ namespace orc {
+       }
+     }
+     // write row index to output stream
+-    rowIndex->SerializeToZeroCopyStream(indexStream.get());
++    if (!rowIndex->SerializeToZeroCopyStream(indexStream.get())) {
++      throw std::logic_error("Failed to write row index stream.");
++    }
+ 
+     // construct row index stream
+     proto::Stream stream;
